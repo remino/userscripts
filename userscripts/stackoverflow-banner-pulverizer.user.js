@@ -1,9 +1,10 @@
 // ==UserScript==
 // @name         StackOverflow Cookie Consent Banner Pulverizer
 // @namespace    https://remino.net/
-// @version      0.2
+// @version      0.3
 // @description  Get rid of that pesky annoying cookie consent banner on StackOverflow sites.
 // @author       Rémino Rem <https://remino.net/>
+// @downloadURL  https://raw.githubusercontent.com/remino/userscripts/main/userscripts/stackoverflow-banner-pulverizer.user.js
 // @match        https://*.stackexchange.com/*
 // @match        https://askubuntu.com/*
 // @match        https://mathoverflow.net/*
