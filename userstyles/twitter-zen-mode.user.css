@@ -5,9 +5,9 @@
 @match        https://twitter.com/*
 ==/UserStyle== */
 
-header,
-[data-testid="DMDrawer"],
-[data-testid="sidebarColumn"] {
+header:not(:has([aria-label*="unread"])),
+[data-testid="DMDrawer"]:not(:has([aria-label*="New Direct Message"])),
+[data-testid="sidebarColumn"]:not(:has([aria-label*="unread"])) {
 	opacity: 0.1;
 	transition: 0.2s opacity ease-in-out;
 }
