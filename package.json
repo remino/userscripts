@@ -1,0 +1,29 @@
+{
+  "name": "bookmarklets",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "engines": {
+    "node": ">= 16.17.0",
+    "pnpm": ">= 7.9.4"
+  },
+  "scripts": {
+    "start": "./bin/bookmarklets compile"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/remino/bookmarklets.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/remino/bookmarklets/issues"
+  },
+  "homepage": "https://github.com/remino/bookmarklets#readme",
+  "devDependencies": {
+    "eslint": "^8.23.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "uglify-js": "^3.17.0"
+  }
+}

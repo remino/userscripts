@@ -1,0 +1,189 @@
+#!/usr/bin/env node --
+/* eslint-disable no-console */
+// vim: ft=javascript
+// Manage bookmarklets.
+
+const { basename, dirname, join, resolve } = require('path')
+const UglifyJS = require('uglify-js')
+const {
+	promises: {
+		open, readFile, readdir, stat,
+	},
+} = require('fs')
+
+const scriptName = basename(__filename)
+const scriptDir = dirname(__filename)
+const rootDir = dirname(scriptDir)
+
+const errors = {
+	general: 1,
+	invalidArg: 16,
+	missingFile: 17,
+	missingDir: 18,
+}
+
+class ConsoleError extends Error {
+	constructor(code = errors.general, ...params) {
+		super(...params)
+		this.name = 'ConsoleError'
+		this.code = code
+	}
+}
+
+const help = () => {
+	console.info(`
+USAGE:
+
+	${scriptName} [build] <file.bookmarklet.js>
+	${scriptName} [compile] <bookmarklet-dir> <bookmark-file>
+	${scriptName} [help]
+
+Manage bookmarklets.
+
+COMMANDS:
+	
+	b build     Build a single bookmarklet and output it to screen.
+	c compile   Compile list of bookmarklets into a Netscape bookmark file.
+	h help      Show this screen.
+`)
+}
+
+process.on('uncaughtException', e => {
+	console.error(e)
+	if (e.code === errors.invalidArg) help()
+	process.exit(e.code || errors.general)
+})
+
+process.on('unhandledRejection', e => { throw e })
+
+const getCmd = arg => {
+	switch (arg) {
+	case 'b': return 'build'
+	case 'c': return 'compile'
+	case 'h': return 'help'
+	default: return arg
+	}
+}
+
+const htmlFooter = () => '</DL><p>'
+
+const htmlHeader = () => `<!DOCTYPE NETSCAPE-Bookmark-file-1>
+<!--This is an automatically generated file.
+		It will be read and overwritten.
+		Do Not Edit! -->
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<Title>Bookmarklets</Title>
+<H1>Bookmarklets</H1>
+<DL><p>
+`
+
+const asyncForEach = async (array, callback) => {
+	for (let index = 0; index < array.length; index += 1) {
+		// eslint-disable-next-line no-await-in-loop
+		await callback(array[index], index, array)
+	}
+}
+
+const dirExists = async path => {
+	try {
+		return (await stat(path)).isDirectory()
+	} catch (e) {
+		return false
+	}
+}
+
+const readFileAsString = async path => (await readFile(path)).toString()
+
+const isFile = async path => (await stat(path)).isFile()
+
+const fileExists = async path => {
+	try {
+		return isFile(path)
+	} catch (e) {
+		return false
+	}
+}
+
+const demandFile = async path => {
+	if (!await fileExists(path)) {
+		throw new ConsoleError(errors.missingFile, `File not readable or not a file: ${path}`)
+	}
+}
+
+const demandDir = async path => {
+	if (!dirExists(path)) throw new ConsoleError(errors.missingDir, `Missing or not a directory: ${path}`)
+}
+
+const escapeBookmarkletUrl = url => encodeURI(url)
+const getTitleFromSrc = src => (src.match(/^\s*\/\/\s*@title\s+(.*)/m) || [])[1]
+
+const buildFromSrc = src => `javascript:void(${
+	UglifyJS
+		.minify(src, { compress: true, mangle: true })
+		.code
+		.replace(/^!/, '')
+		.replace(/;$/, '')
+})`
+
+const buildFromPath = async path => {
+	await demandFile(path)
+	return buildFromSrc(await readFileAsString(path))
+}
+
+const build = async path => {
+	if (!path) throw new ConsoleError(errors.invalidArg, 'Missing JS file path.')
+	console.log(await buildFromPath(path))
+}
+
+const isRegExp = val => typeof val === 'object' && val instanceof RegExp
+
+const getFilesInDir = async (path, filter) => {
+	const entries = await readdir(path)
+	const areFiles = await Promise.all(entries.map(entry => isFile(join(path, entry))))
+	const files = entries.filter(() => areFiles.shift())
+	return typeof filter === 'function' ? files.filter(name => filter(name)) : files
+}
+
+const compile = async (srcDirPathArg, outputPathArg) => {
+	const srcDirPath = srcDirPathArg || resolve(__dirname, 'src')
+	await demandDir(srcDirPath)
+	const outputPath = outputPathArg || resolve(__dirname, 'bookmarklets.html')
+	await demandDir(outputPath)
+
+	const entries = await getFilesInDir(srcDirPath, (name) => {
+		return /\.bookmarklet\.js$/.test(name) && !/^_/.test(name)
+	})
+
+	const fh = await open(outputPath, 'w')
+
+	fh.write(htmlHeader())
+
+	await asyncForEach(entries, async entry => {
+		const path = join(srcDirPath, entry)
+		const src = await readFileAsString(path)
+		const url = escapeBookmarkletUrl(buildFromSrc(src))
+		const title = getTitleFromSrc(src)
+
+		fh.write(`<DT><A HREF="${url}">${title}</a>\n`)
+	})
+
+	fh.write(htmlFooter())
+	fh.close()
+}
+
+const main = async args => {
+	if (args.length < 1) throw new ConsoleError(errors.invalidArg, 'Missing command.')
+
+	const cmd = getCmd(args.shift())
+
+	switch (cmd) {
+	case 'build': return build(...args)
+	case 'compile': return compile(...args)
+	case 'help': return help()
+	default: throw new ConsoleError(errors.invalidArg, 'Invalid command.')
+	}
+}
+
+main(process.argv.slice(2))
+	.then(() => { process.exit() })
+	.catch(e => { throw e })
