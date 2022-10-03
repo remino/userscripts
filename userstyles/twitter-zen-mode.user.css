@@ -1,0 +1,22 @@
+/* ==UserStyle==
+@name         Twitter zen mode
+@description  Fade out sidebars on Twitter until they are needed.
+@author       Rémino Rem <https://remino.net/>
+@match        https://twitter.com/*
+==/UserStyle== */
+
+header,
+[data-testid="DMDrawer"],
+[data-testid="sidebarColumn"] {
+	opacity: 0.1;
+	transition: 0.2s opacity ease-in-out;
+}
+
+header:has(:focus),
+header:hover,
+[data-testid="DMDrawer"]:has(:focus),
+[data-testid="DMDrawer"]:hover,
+[data-testid="sidebarColumn"]:has(:focus),
+[data-testid="sidebarColumn"]:hover {
+	opacity: 1;
+}
