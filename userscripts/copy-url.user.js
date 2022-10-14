@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Copy URL
 // @namespace    https://remino.net/
-// @version      0.1.0
+// @version      1.0.0
 // @description  Display a copyable input field with the page URL and title to copy
 // @author       Rémino Rem
 // @match        *://*/*
@@ -58,6 +58,15 @@
 				transform: translate(-50%, -50%);
 			}
 
+			#${idInput}::backdrop {
+				background: rgba(0, 0, 0, 0);
+				transition: background-color 0.2s ease-in-out;
+			}
+
+			#${idInput}[open]::backdrop {
+				background: rgba(0, 0, 0, 0.5);
+			}
+
 			#${idInput} a {
 				color: inherit;
 				text-decoration: underline;
@@ -70,7 +79,7 @@
 
 	const addInput = () => {
 		addCss()
-		const input = document.createElement('div')
+		const input = document.createElement('dialog')
 		input.contentEditable = true
 		input.setAttribute('id', idInput)
 		input.setAttribute('readonly', true)
@@ -93,15 +102,21 @@
 
 	const inputBlur = () => { getInput().blur() }
 	const inputCopy = () => { document.execCommand('copy') }
-	const inputRemove = () => { getInput().removeAttribute('tabindex') }
 
 	const inputFocus = () => {
 		const input = getInput()
 
 		setTimeout(() => {
 			input.setAttribute('tabindex', '0')
+			if (!input.open) input.showModal()
 			input.focus()
 		}, 1)
+	}
+
+	const inputRemove = () => {
+		const input = getInput()
+		input.close()
+		input.removeAttribute('tabindex')
 	}
 
 	const inputSelect = () => {
