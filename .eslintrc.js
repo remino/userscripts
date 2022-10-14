@@ -6,7 +6,13 @@ module.exports = {
 	},
 	extends: ['airbnb-base'],
 	rules: {
-		indent: ['error', 'tab'],
+		indent: [
+			'error',
+			'tab',
+			{
+				SwitchCase: 1,
+			},
+		],
 		semi: ['error', 'never'],
 		'arrow-parens': ['error', 'as-needed'],
 		'no-tabs': ['error', { allowIndentationTabs: true }],
