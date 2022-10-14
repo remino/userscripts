@@ -106,11 +106,11 @@
 	const getKeys = e => {
 		const mac = isMac()
 		const {
-			ctrlKey, shiftKey, altKey, metaKey, keyCode,
+			ctrlKey, shiftKey, altKey, metaKey, key,
 		} = e
 
 		return {
-			keyCode,
+			key,
 			ctrlKey,
 			shiftKey,
 			altKey: mac ? false : altKey,
@@ -198,51 +198,46 @@
 		setInputValue(`${getPageTitle()} ${await getPageUrl()}`)
 	}
 
-	// Keycodes:
-	// 1=49, 2=50, 3=51, 4=52, 5=53, 6=54
-	// J=74, K=75, L=76, M=77, P=80, S=83, T=84, U=85,
-	// Enter=13, Esc=27, Left=37, Up=38, Right=39, Down=40
 	const keyPressInput = async e => {
 		const {
-			altKey, optKey, shiftKey, ctrlKey, metaKey, cmdKey, keyCode,
+			altKey, optKey, shiftKey, ctrlKey, metaKey, cmdKey, key,
 		} = getKeys(e)
 
 		disableEvent(e)
 
 		if (
 			!optKey && !shiftKey && !metaKey && ctrlKey && (altKey || cmdKey)
-			&& keyCode === 76
+			&& key === 'l'
 		) inputBlur()
 
 		if (altKey || shiftKey || ctrlKey || metaKey || optKey || cmdKey) return
 
-		switch (keyCode) {
-			case 49: case 75: return setFormat('setInputLink')
-			case 50: case 85: return setFormat('setInputUrl')
-			case 51: case 80: return setFormat('setInputPlainMultipleLines')
-			case 52: case 83: return setFormat('setInputPlainSingleLine')
-			case 53: case 77: return setFormat('setInputMarkdown')
-			case 54: case 74: return setFormat('setInputJira')
-			case 37: case 38: return setFormatPrev()
-			case 39: case 40: return setFormatNext()
-			case 13: inputCopy()
+		switch (key) {
+			case '1': case 'k': return setFormat('setInputLink')
+			case '2': case 'u': return setFormat('setInputUrl')
+			case '3': case 'p': return setFormat('setInputPlainMultipleLines')
+			case '4': case 's': return setFormat('setInputPlainSingleLine')
+			case '5': case 'm': return setFormat('setInputMarkdown')
+			case '6': case 'j': return setFormat('setInputJira')
+			case 'ArrowLeft': case 'ArrowUp': return setFormatPrev()
+			case 'ArrowRight': case 'ArrowDown': return setFormatNext()
+			case 'Enter': inputCopy()
 			// eslint-disable-next-line no-fallthrough
-			case 27: return inputBlur()
+			case 'Escape': return inputBlur()
 			default: //
 		}
 	}
 
-	// Keycodes: L=76
 	const keyPressBody = e => {
 		const { target } = e
 		const {
-			altKey, optKey, shiftKey, ctrlKey, metaKey, cmdKey, keyCode,
+			altKey, optKey, shiftKey, ctrlKey, metaKey, cmdKey, key,
 		} = getKeys(e)
 
 		if (
 			!['BUTTON', 'INPUT', 'SELECT', 'TEXTAREA'].includes(target.tagName)
         && !optKey && !shiftKey && !metaKey && ctrlKey && (altKey || cmdKey)
-        && keyCode === 76
+        && key === 'l'
 		) {
 			disableEvent(e)
 			inputFocus()
