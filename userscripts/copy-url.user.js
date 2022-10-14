@@ -31,23 +31,31 @@
 				all: unset;
 				background: rgba(0, 0, 0, 0.8);
 				border: solid 1px #999;
+				border-radius: 8px;
+				box-shadow: 0 8px 60px rgba(0, 0, 0, 0.5);
 				box-sizing: border-box;
 				color: #fff;
 				cursor: pointer;
 				display: block;
-				font: 16px 'Sarasa Mono J', Iosevka, Lato, 'Courier New', Courier, monospace;
-				left: 1em;
+				font: 32px 'Sarasa Mono J', Iosevka, Lato, 'Courier New', Courier, monospace;
+				left: 50%;
 				max-width: calc(100vw - 50px);
 				min-width: 20em;
+				opacity: 0;
 				padding: 0.25em 0.5em;
+				pointer-events: none;
 				position: fixed;
-				top: -100em;
+				top: 50%;
+				transform: translate(-50%, -30%);
+				transition: all 0.2s ease-in-out;
 				z-index: 1000;
 				white-space: pre-wrap;
 			}
 
-			#${idInput}:focus {
-				top: 1em;
+			#${idInput}[tabindex="0"] {
+				opacity: 1;
+				pointer-events: auto;
+				transform: translate(-50%, -50%);
 			}
 
 			#${idInput} a {
@@ -66,8 +74,8 @@
 		input.contentEditable = true
 		input.setAttribute('id', idInput)
 		input.setAttribute('readonly', true)
-		input.setAttribute('tabindex', '0')
 		input.setAttribute('type', 'text')
+		input.addEventListener('blur', inputRemove)
 		input.addEventListener('click', inputClick)
 		input.addEventListener('focus', inputSelect)
 		input.addEventListener('input', inputSelect)
@@ -85,7 +93,16 @@
 
 	const inputBlur = () => { getInput().blur() }
 	const inputCopy = () => { document.execCommand('copy') }
-	const inputFocus = () => { getInput().focus() }
+	const inputRemove = () => { getInput().removeAttribute('tabindex') }
+
+	const inputFocus = () => {
+		const input = getInput()
+
+		setTimeout(() => {
+			input.setAttribute('tabindex', '0')
+			input.focus()
+		}, 1)
+	}
 
 	const inputSelect = () => {
 		if (window.netscape) return document.execCommand('selectAll', false, null)
