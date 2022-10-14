@@ -26,8 +26,8 @@
 
 		const style = document.createElement('style')
 
-		style.textContent = `
-			#copy_url_input {
+		style.textContent = /* css */`
+			#${idInput} {
 				all: unset;
 				background: rgba(0, 0, 0, 0.8);
 				border: solid 1px #999;
@@ -46,11 +46,11 @@
 				white-space: pre-wrap;
 			}
 
-			#copy_url_input:focus {
+			#${idInput}:focus {
 				top: 1em;
 			}
 
-			#copy_url_input a {
+			#${idInput} a {
 				color: inherit;
 				text-decoration: underline;
 			}
