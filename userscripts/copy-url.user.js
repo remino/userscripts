@@ -27,34 +27,34 @@
 		const style = document.createElement('style')
 
 		style.textContent = `
-      #copy_url_input {
-        all: unset;
-        background: rgba(0, 0, 0, 0.8);
-        border: solid 1px #999;
-        box-sizing: border-box;
-        color: #fff;
-        cursor: pointer;
-        display: block;
-        font: 16px 'Sarasa Mono J', Iosevka, Lato, 'Courier New', Courier, monospace;
-        left: 1em;
-        max-width: calc(100vw - 50px);
-        min-width: 20em;
-        padding: 0.25em 0.5em;
-        position: fixed;
-        top: -100em;
-        z-index: 1000;
-        white-space: pre-wrap;
-      }
+			#copy_url_input {
+				all: unset;
+				background: rgba(0, 0, 0, 0.8);
+				border: solid 1px #999;
+				box-sizing: border-box;
+				color: #fff;
+				cursor: pointer;
+				display: block;
+				font: 16px 'Sarasa Mono J', Iosevka, Lato, 'Courier New', Courier, monospace;
+				left: 1em;
+				max-width: calc(100vw - 50px);
+				min-width: 20em;
+				padding: 0.25em 0.5em;
+				position: fixed;
+				top: -100em;
+				z-index: 1000;
+				white-space: pre-wrap;
+			}
 
-      #copy_url_input:focus {
-        top: 1em;
-      }
+			#copy_url_input:focus {
+				top: 1em;
+			}
 
-      #copy_url_input a {
-        color: inherit;
-        text-decoration: underline;
-      }
-    `
+			#copy_url_input a {
+				color: inherit;
+				text-decoration: underline;
+			}
+		`
 
 		style.setAttribute('id', idStyle)
 		document.head.appendChild(style)
@@ -236,8 +236,8 @@
 
 		if (
 			!['BUTTON', 'INPUT', 'SELECT', 'TEXTAREA'].includes(target.tagName)
-        && !optKey && !shiftKey && !metaKey && ctrlKey && (altKey || cmdKey)
-        && key === 'l'
+				&& !optKey && !shiftKey && !metaKey && ctrlKey && (altKey || cmdKey)
+				&& key === 'l'
 		) {
 			disableEvent(e)
 			inputFocus()
