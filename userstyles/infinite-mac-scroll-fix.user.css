@@ -1,0 +1,23 @@
+/* ==UserStyle==
+@name        Infinite Mac Scroll Fix
+@description https://github.com/mihaip/infinite-mac/pull/81
+@match       https://macos8.app/*
+==/UserStyle== */
+
+body, html, #root {
+	height: 100%;
+	width: 100%;
+}
+
+.App {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: center;
+	height: auto;
+	min-height: 100%;
+	min-width: 100%;
+	width: auto;
+}
+
