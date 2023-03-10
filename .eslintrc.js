@@ -21,7 +21,7 @@ module.exports = {
 	},
 	overrides: [
 		{
-			files: ['src/*.bookmarklet.js'],
+			files: ['bookmarklets/*.bookmarklet.js'],
 			rules: {
 				strict: 'off',
 				'lines-around-directive': 'off',
