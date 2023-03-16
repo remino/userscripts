@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         chat.openai.com: Toggle Sidebar
 // @namespace    https://remino.net/
-// @version      1.0.0
+// @version      1.0.1
 // @description  Hide sidebar on page load, add a button to toggle it, also assign '[' as keyboard shortcut.
 // @author       Rémino Rem
 // @inject-into  content
@@ -106,9 +106,9 @@
 		setTimeout(addButton, 100)
 	}
 
-	if (document.readyState === 'interactive') {
+	if (document.readyState === 'complete') {
 		main()
 	} else {
-		document.addEventListener('DOMContentLoaded', main)
+		window.addEventListener('load', main)
 	}
 }())
