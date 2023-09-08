@@ -1,0 +1,9 @@
+/* ==UserStyle==
+@name        YouTube: No Rounded Corners
+@description Remove rounded corners from video player.
+@match       https://www.youtube.com/watch*
+==/UserStyle== */
+
+ytd-watch-flexy[rounded-player-large][default-layout] #ytd-player.ytd-watch-flexy[class] {
+  border-radius: 0;
+}
