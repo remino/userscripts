@@ -14,17 +14,33 @@
 	const css = /* css */`
 		:root {
 			--grid-size: 100px;
-			--grid-size-div: 4;
-			--grid-size-sub: calc(var(--grid-size) / var(--grid-size-div));
-			--grid-size-color-major: rgba(0,0,0,0.6);
-			--grid-size-color-minor: rgba(0,0,0,0.2);
+			--grid-div: 4;
+			--grid-sub: calc(var(--grid-size) / var(--grid-div));
+			--grid-color-major: rgba(0,0,0,0.6);
+			--grid-color-minor: rgba(0,0,0,0.2);
+			--grid-color-bg: rgba(255,255,255,0.8);
+		}
+		@media (prefers-color-scheme: dark) {
+			:root {
+				--grid-color-bg: rgba(0,0,0,0.9);
+				--grid-color-major: rgba(255,255,255,0.4);
+				--grid-color-minor: rgba(255,255,255,0.1);
+			}
 		}
 		
-		body {
-			background-color: rgba(255, 255, 255, 0.8);
+		body::before {
+			display: block;
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			z-index: -10;
+			background-color: var(--grid-color-bg);
 			background-repeat: repeat;
-			background-image: linear-gradient(to bottom, var(--grid-size-color-major) 1px, transparent 1px), linear-gradient(to right, var(--grid-size-color-major) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-size-color-minor) 1px, transparent 1px), linear-gradient(to right, var(--grid-size-color-minor) 1px, transparent 1px);
-			background-size: 100% var(--grid-size), var(--grid-size) 100%, 100% var(--grid-size-sub), var(--grid-size-sub) 100%;
+			background-image: linear-gradient(to bottom, var(--grid-color-major) 1px, transparent 1px), linear-gradient(to right, var(--grid-color-major) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-color-minor) 1px, transparent 1px), linear-gradient(to right, var(--grid-color-minor) 1px, transparent 1px);
+			background-size: 100% var(--grid-size), var(--grid-size) 100%, 100% var(--grid-sub), var(--grid-sub) 100%;
 		}
 	`
 
