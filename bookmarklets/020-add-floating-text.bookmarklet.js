@@ -12,7 +12,7 @@
 	let style = doc.querySelector(`#${styleId}`)
 
 	if (!style) {
-		css = `
+		css = /* css */`
 			.floating-text {'
 				align-items:flex-start;
 				background:rgba(0,0,0,0.8);
@@ -21,6 +21,7 @@
 				color:#fff;
 				cursor:move;
 				display:flex;
+				flex-flow:column nowrap;
 				font-family:sans-serif;
 				font-size:14px;
 				font-weight:400;
@@ -33,11 +34,17 @@
 				outline:0;
 				overflow:scroll;
 				padding:0.5em 1em;
-				resize:horizontal;
+				resize:none;
 				position:absolute;
 				text-align:center;
 				top:0;
+				transition:background-color 0.2s ease-in-out;
 				z-index:1000
+			}
+
+			.floating-text:hover, .floating-text:focus {
+				background:#000;
+				resize:horizontal;
 			}
 		`
 
@@ -83,8 +90,21 @@
 			isMouseDown = true
 		}
 
-		// mouse button down over the element
+		/**
+		 * Listens to `keydown` event.
+		 *
+		 * @param {Object} event - The event.
+		 */
+		const onKeyDown = event => {
+			if (event.key === 'Backspace' && event.shiftKey && !event.ctrlKey && !event.altKey && !event.metaKey) {
+				event.currentTarget.remove()
+				event.preventDefault()
+				event.stopPropagation()
+			}
+		}
+
 		element.addEventListener('mousedown', onMouseDown)
+		element.addEventListener('keydown', onKeyDown)
 
 		/**
 		 * Listens to `mouseup` event.
