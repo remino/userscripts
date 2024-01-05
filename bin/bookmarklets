@@ -58,14 +58,14 @@ process.on('unhandledRejection', e => {
 
 const getCmd = arg => {
 	switch (arg) {
-	case 'b':
-		return 'build'
-	case 'c':
-		return 'compile'
-	case 'h':
-		return 'help'
-	default:
-		return arg
+		case 'b':
+			return 'build'
+		case 'c':
+			return 'compile'
+		case 'h':
+			return 'help'
+		default:
+			return arg
 	}
 }
 
@@ -190,14 +190,14 @@ const main = async args => {
 	const cmd = getCmd(args.shift())
 
 	switch (cmd) {
-	case 'build':
-		return build(...args)
-	case 'compile':
-		return compile(...args)
-	case 'help':
-		return help()
-	default:
-		throw new ConsoleError(errors.invalidArg, 'Invalid command.')
+		case 'build':
+			return build(...args)
+		case 'compile':
+			return compile(...args)
+		case 'help':
+			return help()
+		default:
+			throw new ConsoleError(errors.invalidArg, 'Invalid command.')
 	}
 }
 
