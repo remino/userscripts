@@ -2,7 +2,7 @@
 // @name         YouTube: Ad Blocker Blocker
 // @name         Copy URL
 // @namespace    https://remino.net/
-// @version      1.0.0
+// @version      1.0.1
 // @description  Remove the anti ad-blocker blocker pop-up.
 // @author       Rémino Rem
 // @match        https://www.youtube.com/*
@@ -20,7 +20,7 @@
 		mutationsList.forEach(mutation => {
 			if (mutation.type === 'childList') {
 				mutation.addedNodes.forEach(node => {
-					if (node.nodeType === 1 && node.tagName.toLowerCase() === 'ytd-popup-container') {
+					if (node.nodeType === 1 && node.tagName === 'YTD-POPUP-CONTAINER') {
 						node.remove()
 					}
 				})
