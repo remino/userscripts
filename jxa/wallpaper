@@ -10,6 +10,16 @@ const getEnv = key => $.getenv(key)
 const homeDir = () => getEnv('HOME')
 const fileExists = file => $.NSFileManager.defaultManager.fileExistsAtPath(file)
 const log = (...args) => console.log(...args)
+const IMAGE_FILE_EXTS = ['avif', 'jpg', 'png']
+
+const pathExtension = path => ObjC.deepUnwrap($.NSString.stringWithString(path).pathExtension)
+
+const directoryHasImageFiles = dir => {
+	const fm = $.NSFileManager.defaultManager
+	const files = fm.contentsOfDirectoryAtPathError(dir, null)
+	const filesArray = ObjC.deepUnwrap(files)
+	return filesArray.some(file => IMAGE_FILE_EXTS.includes(pathExtension(file)))
+}
 
 const errorBox = (app, msg) => {
 	app.displayAlert(msg)
@@ -21,9 +31,50 @@ const fatal = (app, code, msg) => {
 	$.exit(code)
 }
 
+const isDirectory = file => {
+	const isDir = Ref()
+	$.NSFileManager.defaultManager.fileExistsAtPathIsDirectory(file, isDir)
+	return isDir[0]
+}
+
+const pickRandomFileInDirectory = (dir, validExts) => {
+	const fm = $.NSFileManager.defaultManager
+	const files = fm.contentsOfDirectoryAtPathError(dir, null)
+	const filesArray = ObjC.deepUnwrap(files)
+	const validFiles = filesArray.filter(file => validExts.includes(pathExtension(file)))
+	const randomIndex = Math.floor(Math.random() * validFiles.length)
+	return validFiles[randomIndex]
+}
+
+const pickRandomImageInDirectory = dir => pickRandomFileInDirectory(dir, IMAGE_FILE_EXTS)
+
 const requireFile = (app, file) => {
 	if (fileExists(file)) return
 	fatal(app, E_MISSING_FILE, `File does not exist at path: ${filePath}`)
+}
+
+const setDesktopPictureFromFile = (desktop, file) => {
+	const result = desktop.picture.set(file)
+	if (result) return file
+	return result
+}
+
+const setDesktopPictureFromPath = (desktop, file) => {
+	if (!isDirectory(file)) return setDesktopPictureFromFile(desktop, file)
+
+	if (!directoryHasImageFiles(file)) {
+		log(`No image files found in directory ${file}`)
+		return
+	}
+
+	const randomImage = `${file}/${pickRandomImageInDirectory(file)}`
+	const result = setDesktopPictureFromFile(desktop, randomImage)
+
+	desktop.picturesFolder.set(file)
+	desktop.randomOrder.set(true)
+	desktop.changeInterval.set(5 * 60) // 5 minutes
+
+	return result
 }
 
 const setAllDesktops = app => {
@@ -44,7 +95,7 @@ const setAllDesktops = app => {
 			return
 		}
 
-		const result = desktop.picture.set(file)
+		const result = setDesktopPictureFromPath(desktop, file)
 
 		log(`${name} ${result}`)
 	})
