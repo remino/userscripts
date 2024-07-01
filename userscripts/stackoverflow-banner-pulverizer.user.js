@@ -23,12 +23,10 @@
 // @grant        none
 // ==/UserScript==
 
-(function() {
-	'use strict';
-
+(function () {
 	const banner = document.querySelector('.js-consent-banner')
 
 	if (!banner) return
 
 	banner.parentNode.removeChild(banner)
-})();
+}())

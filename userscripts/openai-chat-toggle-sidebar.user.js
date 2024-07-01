@@ -64,8 +64,8 @@
 		document.body.classList.toggle('sidebar-hidden')
 	}
 
-	const isInputField = el => ['SELECT', 'TEXTAREA'].includes(el.tagName) ||
-		(el.tagName === 'INPUT' && !['button', 'checkbox', 'radio', 'reset', 'submit'].includes(el.type))
+	const isInputField = el => ['SELECT', 'TEXTAREA'].includes(el.tagName)
+		|| (el.tagName === 'INPUT' && !['button', 'checkbox', 'radio', 'reset', 'submit'].includes(el.type))
 
 	const keyPressInput = event => {
 		const {
