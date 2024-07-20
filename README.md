@@ -27,7 +27,7 @@ To create a new bookmarklet:
 - Write your code.
 - Run `pnpm start`.
 
-The new bookmarklet should be found in `bookmarklets.html`.
+The new bookmarklet should be found in `bookmarklets/index.html`.
 
 ## Userscripts
 

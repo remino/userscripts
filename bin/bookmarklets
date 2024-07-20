@@ -161,7 +161,7 @@ const getFilesInDir = async (path, filter) => {
 const compile = async (srcDirPathArg, outputPathArg) => {
 	const srcDirPath = srcDirPathArg || resolve(__dirname, '../bookmarklets')
 	await demandDir(srcDirPath)
-	const outputPath = outputPathArg || resolve(__dirname, '../bookmarklets.html')
+	const outputPath = outputPathArg || resolve(__dirname, '../bookmarklets/index.html')
 	await demandDir(outputPath)
 
 	const entries = await getFilesInDir(
