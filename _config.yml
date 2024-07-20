@@ -1,0 +1,25 @@
+title: userscripts
+description: Collection of browser userscripts
+baseurl: /userscripts
+domain: remino.github.io
+url: https://remino.github.io
+
+defaults:
+  - scope:
+      type: pages
+    values:
+      layout: default
+
+exclude:
+  - LICENSE.txt
+  - bin
+  - bookmarklets/*.js
+  - jxa
+  - karabiner
+  - node_modules
+  - userscripts
+  - userstyles
+  - jeksite
+
+include:
+  - .htaccess

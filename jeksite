@@ -1,0 +1,152 @@
+#!/bin/sh
+# jeksite
+
+VERSION='1.1.1'
+
+jeksite_main() {
+	trap _exit INT TERM
+
+	e_args=16
+	e_failed_cd=17
+	e_no_jekyll=18
+	e_exists=19
+
+	scriptinv="$( basename "$0" )"
+	scriptpath="$( readlink -f "$0" )"
+	scriptname="$( basename "$scriptpath" )"
+	scriptdir="$( dirname "$scriptpath" )"
+
+	while getopts hv opt
+	do
+		case $opt in
+			h) cmd=help ;;
+			v) cmd=version ;;
+			*) _invalid_opt ;;
+		esac
+	done
+
+	shift "$(( OPTIND - 1 ))"
+
+	[ $# -gt 0 ] && cmd="$1" && shift
+	[ -z "$cmd" ] && cmd="serve"
+
+	case "$cmd" in
+		help|jekyll|new|serve|version) "jeksite_$cmd" "$@" ;;
+		*) _invalid_cmd ;;
+	esac
+
+	_exit
+}
+
+jeksite_help() {
+cat <<USAGE
+$scriptname $VERSION
+
+USAGE: $scriptinv [<options>] <command> [<args>...]
+
+Serve or create new jeksite.
+
+COMMANDS:
+
+	help
+		Show this help message.
+
+	jekyll [<args>]
+		Run Jekyll. Pass all arguments to it.
+
+	new <dir>
+		Create new jeksite in <dir>.
+
+	serve [<args>]
+		Serve this site using Jekyll. Pass arguments to it.
+
+	version
+		Show the version.
+
+OPTIONS:
+
+	-h        Show this help screen.
+	-v        Show script name and version number.
+
+USAGE
+}
+
+jeksite_jekyll() {
+	_find_jekyll_dir
+	[ "$( pwd )" != "$jekyll_dir" ] && _echo "$jekyll_dir"
+	cd "$jekyll_dir" || exit $e_failed_cd
+	[ $# -gt 0 ] && bundle exec jekyll "$@" && return
+	bundle exec jekyll serve --livereload --incremental "$@"
+}
+
+jeksite_new() {
+	[ $# -lt 1 ] && _fatal $e_args "Must specify directory."
+
+	dir="$1"
+	[ -d "$dir" ] && _fatal $e_exists "Directory already exists: $dir"
+
+	git clone https://github.com/remino/jeksite "$dir"
+	cd "$dir" || _fatal $e_failed_cd "Failed to cd to: $dir"
+	[ -d .git ] && rm -rf .git
+	bundle install
+	git init
+	git add .
+	git commit -m "Initial commit."
+}
+
+jeksite_serve() {
+	jeksite_jekyll serve --livereload --incremental -- "$@"
+}
+
+jeksite_version() {
+	_echo "$scriptname $VERSION"
+}
+
+_echo() {
+	echo "$@"
+}
+
+_error() {
+	_echo "$@" >&2
+}
+
+_exit() {
+	exit_code=$?
+	exit $exit_code
+}
+
+_fatal() {
+	exit_code="$1"
+	shift
+	_error "$@"
+	exit "$exit_code"
+}
+
+_find_jekyll_dir() {
+	for jekyll_dir in "$( pwd )" "$scriptdir"
+	do
+		while [ "$jekyll_dir" != '/' ]
+		do
+			[ -f "$jekyll_dir/_config.yml" ] && return
+			jekyll_dir="$( dirname "$jekyll_dir" )"
+		done
+	done
+
+	_fatal $e_no_jekyll "Failed to find Jekyll directory"
+}
+
+_invalid_cmd() {
+	_error "Invalid command: $cmd"
+	_echo
+	jeksite_help
+	exit $e_args
+}
+
+_invalid_opt() {
+	_error "Invalid option: $opt"
+	_echo
+	jeksite_help
+	exit $e_args
+}
+
+jeksite_main "$@"

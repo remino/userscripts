@@ -1,9 +1,14 @@
 userscripts
 ===========
 
-*By [Rémino Rem](https://remino.net/)*
+[Rémino Rem](https://remino.net/)
 
 Collection of bookmarklets, userscripts, and userstyles.
+
+- [Code](https://github.com/remino/userscripts)
+- [Site](https://remino.github.io/userscripts/)
+
+---
 
 - [Bookmarklets](#bookmarklets)
 	- [Usage](#usage)
@@ -12,9 +17,10 @@ Collection of bookmarklets, userscripts, and userstyles.
 - [Userstyles](#userstyles)
 
 ## Bookmarklets
+
 ### Usage
 
-You can import the bookmarks in [bookmarklets.html](bookmarklets.html) into any browser you choose. This will add all the bookmarklets at once.
+You can import the bookmarks in [bookmarklets/index.html](bookmarklets/index.html) into any browser you choose. This will add all the bookmarklets at once.
 
 ### Development
 
