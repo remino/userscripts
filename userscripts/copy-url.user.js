@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Copy URL
 // @namespace    https://remino.net/
-// @version      1.0.0
+// @version      1.0.1
 // @description  Display a copyable input field with the page URL and title to copy
 // @author       Rémino Rem
 // @match        *://*/*
@@ -9,6 +9,23 @@
 // @inject-into  content
 // ==/UserScript==
 /* eslint-disable consistent-return,func-names,no-use-before-define,strict */
+
+/*
+Version 1.0.1 is just adding this comment.
+
+I thought it was best to have all of my "copy links" utilities in one place,
+but I was probably wrong. Now, I've made bookmarklets for each types of links,
+which you can also use.
+
+The advantage of using bookmarklets instead:
+- More keyboard shortcut customizability.
+- Ability to use on mobile.
+- No need to install a userscript manager.
+- No need to load the script on every page.
+
+Therefore, I encourage you to use all the "Copy" bookmarklets instead of this
+userscript. But if you still want to use this userscript, you can.
+*/
 
 (function copyUrl() {
 	'use strict'
