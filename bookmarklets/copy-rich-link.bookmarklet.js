@@ -20,7 +20,6 @@ const getDocShortestUrl = require('./lib/get-doc-shortest-url.js');
 	navigator.clipboard.write([
 		new ClipboardItem({
 			'text/html': new Blob([html], { type: 'text/html' }),
-			'text/jira': new Blob([jira], { type: 'text/jira' }),
 			'text/markdown': new Blob([markdown], { type: 'text/markdown' }),
 			'text/plain': new Blob([text], { type: 'text/plain' }),
 			'text/uri-list': new Blob([url], { type: 'text/uri-list' }),
