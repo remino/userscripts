@@ -79,6 +79,7 @@ const htmlHeader = () => `<!DOCTYPE NETSCAPE-Bookmark-file-1>
 		It will be read and overwritten.
 		Do Not Edit! -->
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="./style.css" />
 <Title>Bookmarklets</Title>
 <H1>Bookmarklets</H1>
 <DL><p>

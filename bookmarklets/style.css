@@ -1,0 +1,56 @@
+:root {
+	--color-bg: #f0f0f0;
+	--color-fg: #000;
+	--color-link: #00f;
+	--color-link-visited: #551a8b;
+	--color-link-active: #f00;
+	--font-family: sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--color-bg: #000;
+		--color-fg: #fff;
+		--color-link: #0ff;
+		--color-link-visited: #a0a;
+		--color-link-active: #f00
+	}
+}
+
+a {
+	color: var(--color-link);
+}
+
+a:visited {
+	color: var(--color-link-visited);
+}
+
+a:active {
+	color: var(--color-link-active);
+}
+
+body {
+	box-sizing: border-box;
+	height: min-content;
+	margin: 1em auto;
+	padding: 0 1em;
+}
+
+html {
+	align-items: center;
+	background-color: var(--color-bg);
+	color: var(--color-fg);
+	display: flex;
+	flex-flow: column nowrap;
+	font-family: var(--font-family);
+	justify-content: center;
+	line-height: 1.6;
+	min-height: 100vh;
+	min-width: 100vw;
+}
+
+h1 {
+	font-size: 1.6rem;
+	line-height: 1;
+	margin: 1rem 0;
+}
