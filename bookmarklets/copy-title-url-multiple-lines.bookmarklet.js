@@ -1,8 +1,10 @@
 // @title Copy Title & URL on Multiple Lines
+const getDocShortestUrl = require('./lib/get-doc-shortest-url.js');
+
 (function copyTitleUrlMultipleLines() {
 	'use strict'
 
-	const url = document.location.href
+	const url = getDocShortestUrl(document)
 	const { title } = document
 	const text = `${title}\n${url}`
 

@@ -1,8 +1,10 @@
 // @title Copy Markdown Link
+const getDocShortestUrl = require('./lib/get-doc-shortest-url.js');
+
 (function copyMarkdownLink() {
 	'use strict'
 
-	const url = document.location.href.replace(/([\\)])/g, '\\$1')
+	const url = getDocShortestUrl(document).replace(/([\\)])/g, '\\$1')
 	const title = document.title.replace(/([\\\]*_`])/g, '\\$1')
 	const markdown = `[${title}](${url})`
 

@@ -10,6 +10,10 @@ module.exports = {
 		sourceType: 'module',
 	},
 	rules: {
+		'import/extensions': [
+			'error',
+			'always',
+		],
 		indent: [
 			'error',
 			'tab',

@@ -3,8 +3,11 @@
 // vim: ft=javascript
 // Manage bookmarklets.
 
+const { rollup } = require('rollup')
+const nodeResolve = require('@rollup/plugin-node-resolve')
+const commonjs = require('@rollup/plugin-commonjs')
 const { basename, join, resolve } = require('path')
-const UglifyJS = require('uglify-js')
+const { minify } = require('uglify-js')
 const {
 	promises: {
 		open, readFile, readdir, stat,
@@ -129,17 +132,37 @@ const demandDir = async path => {
 const escapeBookmarkletUrl = url => encodeURI(url)
 const getTitleFromSrc = src => (src.match(/^\s*\/\/\s*@title\s+(.*)/m) || [])[1]
 
-const buildJs = src => {
-	const js = UglifyJS.minify(src, { compress: true, mangle: true })
+const buildJsFile = async path => {
+	const bundle = await rollup({
+		input: path,
+		plugins: [nodeResolve(), commonjs()],
+	})
+
+	const { output } = await bundle.generate({
+		format: 'iife',
+	})
+
+	let code = ''
+	output.forEach(chunkOrAsset => {
+		if (chunkOrAsset.type === 'asset') {
+			console.log('Asset', chunkOrAsset)
+		} else {
+			code += chunkOrAsset.code
+		}
+	})
+
+	const js = minify(code, { compress: true, mangle: true })
+
 	if (js.error) throw js.error
+
 	return js.code
 }
 
-const buildFromSrc = src => `javascript:void(${buildJs(src).replace(/^!/, '').replace(/;$/, '')})`
+const buildFromSrc = async src => `javascript:void(${src.replace(/^!/, '').replace(/;$/, '')})`
 
 const buildFromPath = async path => {
 	await demandFile(path)
-	return buildFromSrc(await readFileAsString(path))
+	return buildFromSrc(await buildJsFile(path))
 }
 
 const build = async path => {
@@ -176,8 +199,10 @@ const compile = async (srcDirPathArg, outputPathArg) => {
 	await asyncForEach(entries, async entry => {
 		const path = join(srcDirPath, entry)
 		const src = await readFileAsString(path)
-		const url = escapeBookmarkletUrl(buildFromSrc(src))
+		const url = escapeBookmarkletUrl(await buildFromPath(path))
 		const title = getTitleFromSrc(src)
+
+		console.info(title)
 
 		fh.write(`<DT><A HREF="${url}">${title}</a>\n`)
 	})

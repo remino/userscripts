@@ -1,8 +1,10 @@
 // @title Copy Title & URL on Single Line
+const getDocShortestUrl = require('./lib/get-doc-shortest-url.js');
+
 (function copyTitleUrlSingleLine() {
 	'use strict'
 
-	const url = document.location.href
+	const url = getDocShortestUrl(document)
 	const { title } = document
 	const text = `${title} ${url}`
 
