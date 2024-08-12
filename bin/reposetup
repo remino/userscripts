@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+git config filter.minify.clean "bin/minifysrc"
+git config filter.minify.smudge "cat"
+

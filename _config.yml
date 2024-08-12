@@ -20,6 +20,7 @@ exclude:
   - userscripts
   - userstyles
   - jeksite
+  - *.src.html
 
 include:
   - .htaccess
