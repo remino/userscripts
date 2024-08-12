@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-input_file="$1"
-output_file="${input_file/.src.html/.html}"
-
-minify --html "$input_file" > "$output_file"
-
