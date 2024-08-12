@@ -59,6 +59,49 @@ const toDoubleWidth = require('./lib/to-double-width.js');
 		return null
 	}
 
+	const selectElement = text => new Promise((resolve, reject) => {
+		try {
+			const style = document.createElement('style')
+			style.textContent = '* { cursor: crosshair !important; }'
+
+			const div = document.createElement('div')
+			div.style.cssText = `
+				all: initial;
+				background: Canvas;
+				border-sizing: border-box;
+				bottom: 14px;
+				border: solid 1px CanvasText;
+				border-radius: 4px;
+				color: CanvasText;
+				font-family: sans-serif;
+				font-size: 16px;
+				left: 50vw;
+				padding: 10px 20px;
+				pointer-events: none;
+				position: fixed;
+				transform: translateX(-50%);
+				z-index: 999999;
+			`
+			div.innerHTML = `Click on an input field to paste <strong>${text}</strong>`
+
+			document.head.appendChild(style)
+			document.body.appendChild(div)
+
+			const onClick = event => {
+				event.preventDefault()
+				event.stopPropagation()
+				document.removeEventListener('click', onClick, true)
+				document.head.removeChild(style)
+				document.body.removeChild(div)
+				resolve(event.target)
+			}
+
+			document.addEventListener('click', onClick, true)
+		} catch (err) {
+			reject(err)
+		}
+	})
+
 	const paste = async () => {
 		const num = await readClipboard()
 
@@ -69,15 +112,19 @@ const toDoubleWidth = require('./lib/to-double-width.js');
 
 		const parts = splitJpNumber(num)
 
-		let field = getActiveElement()
-
-		if (!field) {
-			error('Cannot get active element.')
+		if (!parts.length && !parts[0]) {
+			error('There is no number to paste in the clipboard.')
 			return
 		}
 
+		let field = getActiveElement()
+
+		if (!field || field.tagName !== 'INPUT') {
+			field = await selectElement(parts.join('-'))
+		}
+
 		if (field.tagName !== 'INPUT') {
-			error('Please click on an input field before running this bookmarklet.')
+			error('No input field selected.')
 			return
 		}
 
