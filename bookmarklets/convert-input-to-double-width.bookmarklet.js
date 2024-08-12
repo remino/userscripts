@@ -1,5 +1,6 @@
 // @title Convert Input to Double Width (Zenkaku)
-const getActiveElement = require('./lib/get-active-element.js');
+const getActiveElement = require('./lib/get-active-element.js')
+const toDoubleWidth = require('./lib/to-double-width.js');
 
 (function convertInputToDoubleWidth() {
 	'use strict'
@@ -8,14 +9,6 @@ const getActiveElement = require('./lib/get-active-element.js');
 		console.error(`[${convertInputToDoubleWidth.name}] ${msg}`)
 		alert(`${msg}`)
 	}
-
-	const toDoubleWidth = str => str.split('').map(char => {
-		const code = char.charCodeAt(0)
-		if (code >= 33 && code <= 126) {
-			return String.fromCharCode(code + 0xFEE0)
-		}
-		return char
-	}).join('')
 
 	const main = () => {
 		const activeElement = getActiveElement()

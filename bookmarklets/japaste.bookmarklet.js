@@ -1,6 +1,8 @@
 // @title Japaste
 // Paste Japanese phone numbers and postal codes into multiple input fields.
-const getActiveElement = require('./lib/get-active-element.js');
+const getActiveElement = require('./lib/get-active-element.js')
+const toSingleWidth = require('./lib/to-single-width.js')
+const toDoubleWidth = require('./lib/to-double-width.js');
 
 (function japaste() {
 	'use strict'
@@ -16,8 +18,13 @@ const getActiveElement = require('./lib/get-active-element.js');
 		return acc
 	}, [0, []])[1]
 
+	const isDoubleWidth = char => {
+		const code = char.charCodeAt(0)
+		return code >= 0xFF01 && code <= 0xFF5E
+	}
+
 	const splitJpNumber = number => {
-		const digits = number.replace(/\D/g, '')
+		const digits = toSingleWidth(number.replace(/[^0-9０-９]/g, ''))
 
 		if (digits.length === 7) {
 			return splitAt(digits, 3, 7)
@@ -44,7 +51,7 @@ const getActiveElement = require('./lib/get-active-element.js');
 		const inputs = Array.from(form.elements)
 		const currentIndex = inputs.indexOf(currentInput)
 
-		if (currentIndex > -1 && currentIndex < inputs.length - 2) {
+		if (currentIndex > -1 && currentIndex < inputs.length - 1) {
 			const nextInput = inputs[currentIndex + 1]
 			if (nextInput.tagName === 'INPUT') return nextInput
 		}
@@ -74,13 +81,30 @@ const getActiveElement = require('./lib/get-active-element.js');
 			return
 		}
 
-		while (field && parts.length && parts[0].length) {
-			field.value = parts.shift()
-			if (parts.length) field = getNextInputField(field)
-			if (!field) break
+		const firstFieldValue = field.value.trim()
+
+		if (toSingleWidth(firstFieldValue) === parts[0]) {
+			if (!isDoubleWidth(firstFieldValue)) {
+				parts.forEach((part, i) => {
+					parts[i] = toDoubleWidth(part)
+				})
+			}
 		}
 
-		field.focus()
+		while (field && parts.length && parts[0].length) {
+			let nextField
+			field.value = parts.shift()
+			if (parts.length) nextField = getNextInputField(field)
+			if (!nextField) break
+			field = nextField
+		}
+
+		const { form } = field
+
+		if (!form) return
+
+		const event = new Event('change', { bubbles: true })
+		form.dispatchEvent(event)
 	}
 
 	paste()
