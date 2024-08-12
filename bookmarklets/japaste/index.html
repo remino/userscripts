@@ -72,7 +72,7 @@ javascript:void(function()%7B%22use%20strict%22;const%20n=(e=document)=%3E%7Blet
 			<a href="#">Back to top</a>
 		</nav>
 		<hr />
-		<h2>Usage</h2>
+		<h2 id="usage">Usage</h2>
 		<p>To use this thing:</p>
 		<ol>
 			<li>Copy a Japanese phone number or postal code from somewhere.</li>
@@ -93,12 +93,12 @@ javascript:void(function()%7B%22use%20strict%22;const%20n=(e=document)=%3E%7Blet
 			<a href="#">Back to top</a>
 		</nav>
 		<hr />
-		<h2>Playground</h2>
+		<h2 id="playground">Playground</h2>
 		<p>
 			Install the bookmarklet then try it out here. Or just click the
 			bookmarklet at the top of the page to give it a go before installing it.
 		</p>
-		<form id="playground">
+		<form id="pgform">
 			<h3>Phone Number</h3>
 			<label>
 				<span>Phone number in 1 field</span>
@@ -129,25 +129,23 @@ javascript:void(function()%7B%22use%20strict%22;const%20n=(e=document)=%3E%7Blet
 		<script>
 			// disable submit on form
 			;(function () {
-				const playground = document.getElementById('playground')
+				const pgform = document.getElementById('pgform')
 
 				const applyValidity = () => {
-					const submit = playground.querySelector('button[type="submit"]')
-					submit.disabled = !playground.checkValidity()
+					const submit = pgform.querySelector('button[type="submit"]')
+					submit.disabled = !pgform.checkValidity()
 				}
 
-				playground.addEventListener('submit', event => {
+				pgform.addEventListener('submit', event => {
 					event.preventDefault()
 					event.stopPropagation()
 
 					alert('Form submitted! (Actually nothing was sent.)')
 				})
 
-				playground.addEventListener('input', applyValidity)
-				playground.addEventListener('change', applyValidity)
-				playground.addEventListener('reset', () =>
-					setTimeout(applyValidity, 10)
-				)
+				pgform.addEventListener('input', applyValidity)
+				pgform.addEventListener('change', applyValidity)
+				pgform.addEventListener('reset', () => setTimeout(applyValidity, 10))
 
 				const bookmarkurl = document.getElementById('bookmarkurl')
 
