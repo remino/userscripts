@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+		<title>Japaste Playground</title>
+		<link rel="stylesheet" href="https://unpkg.com/semcss/dist/sem.css" />
+		<style>
+			:root {
+				--sc-mw: 20rem;
+			}
+
+			label:has(input:nth-of-type(2)) input {
+				width: 6rem;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Japaste</h1>
+		<details>
+			<summary>Details</summary>
+			<nav>
+				Bookmarklet:<br />
+				<a
+					role="button"
+					href="javascript:void(function()%7B%22use%20strict%22;const%20r=(e=document)=%3E%7Blet%20t=e.activeElement;return%20t=%22IFRAME%22===t.tagName?r(t.contentDocument):t%7D;const%20o=r,i=e=%3Ee.split(%22%22).map(e=%3E%7Bvar%20t=e.charCodeAt(0);return%2065281%3C=t&&t%3C=65374?String.fromCharCode(t-65248):e%7D).join(%22%22),c=e=%3Ee.split(%22%22).map(e=%3E%7Bvar%20t=e.charCodeAt(0);return%2033%3C=t&&t%3C=126?String.fromCharCode(t+65248):e%7D).join(%22%22);!function%20t()%7Bconst%20n=e=%3E%7Bconsole.error(%60%5B$%7Bt.name%7D%5D%20%60+e),alert(%22%22+e)%7D,a=(r,...e)=%3Ee.reduce((e,t)=%3E(e%5B1%5D.push(r.slice(e%5B0%5D,t)),e%5B0%5D=t,e),%5B0,%5B%5D%5D)%5B1%5D;(async()=%3E%7Bvar%20t=await(async()=%3E%7Btry%7Breturn%20navigator.clipboard.readText()%7Dcatch(e)%7Breturn%20console.error(e),%22%22%7D%7D)();if(t)%7Bconst%20r=(e=%3E%7Bconst%20t=i(e.replace(/%5B%5E0-9%EF%BC%90-%EF%BC%99%5D/g,%22%22));return%207===t.length?a(t,3,7):t.startsWith(%2203%22)%7C%7Ct.startsWith(%2206%22)?a(t,2,6,10):a(t,3,7,11)%7D)(t);let%20e=o();if(e)if(%22INPUT%22!==e.tagName)n(%22Please%20click%20on%20an%20input%20field%20before%20running%20this%20bookmarklet.%22);else%7Bt=e.value.trim();for(i(t)!==r%5B0%5D%7C%7C(e=%3E%7Be=e.charCodeAt(0);return%2065281%3C=e&&e%3C=65374%7D)(t)%7C%7Cr.forEach((e,t)=%3E%7Br%5Bt%5D=c(e)%7D);e&&r.length&&r%5B0%5D.length&&(e.value=r.shift(),e=r.length?(e=%3E%7Bvar%20t=e%5B%22form%22%5D;const%20r=Array.from(t.elements);t=r.indexOf(e);if(-1%3Ct&&t%3Cr.length-1)%7Be=r%5Bt+1%5D;if(%22INPUT%22===e.tagName)return%20e%7Dreturn%20null%7D)(e):e););%7Delse%20n(%22Cannot%20get%20active%20element.%22)%7Delse%20n(%22Failed%20to%20read%20clipboard.%22)%7D)()%7D()%7D())"
+					>Japaste</a
+				>
+			</nav>
+			<p>
+				Japanese Web design is… unique. The UX may be functional but is often
+				frustrating. I was tired of them always making me break my phone number
+				or postal code into multiple fields, so I made a bookmarklet out of it.
+			</p>
+			<p>
+				To install the bookmarklet, simply drag the button above into your
+				bookmarks. Once you have it installed, you can test its functionality on
+				this page.
+			</p>
+			<p>By <a href="https://remino.net/" target="_blank">RÉMINO</a></p>
+		</details>
+		<form>
+			<h2>Phone Number</h2>
+			<label>
+				<span>Phone number in 1 field</span>
+				<input value="080-５５５５-1234" readonly />
+			</label>
+			<label>
+				<span>Phone number in 3 fields</span>
+				<input maxlength="3" required pattern="[0-9０-９]{3}" />
+				<input maxlength="4" required pattern="[0-9０-９]{4}" />
+				<input maxlength="4" required pattern="[0-9０-９]{4}" />
+			</label>
+			<h2>Postal Code</h2>
+			<label>
+				<span>Postal code in 1 field</span>
+				<input value="１５１-0001" readonly />
+			</label>
+			<label>
+				<span>Postal code in 2 fields</span>
+				<input maxlength="3" required pattern="[0-9０-９]{3}" />
+				<input maxlength="4" required pattern="[0-9０-９]{4}" />
+			</label>
+			<button type="reset">Reset</button>
+			<button type="submit" disabled>Submit</button>
+		</form>
+		<script>
+			// disable submit on form
+			;(function () {
+				const form = document.querySelector('form')
+
+				const applyValidity = () => {
+					const submit = form.querySelector('button[type="submit"]')
+					submit.disabled = !form.checkValidity()
+				}
+
+				form.addEventListener('submit', e => {
+					e.preventDefault()
+					e.stopPropagation()
+				})
+
+				form.addEventListener('input', applyValidity)
+				form.addEventListener('change', applyValidity)
+				form.addEventListener('reset', () => setTimeout(applyValidity, 10))
+			})()
+		</script>
+	</body>
+</html>
