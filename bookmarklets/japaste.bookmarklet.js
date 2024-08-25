@@ -30,6 +30,10 @@ const toDoubleWidth = require('./lib/to-double-width.js');
 			return splitAt(digits, 3, 7)
 		}
 
+		if (digits.length === 16) {
+			return splitAt(digits, 4, 8, 12, 16)
+		}
+
 		if (digits.startsWith('03') || digits.startsWith('06')) {
 			return splitAt(digits, 2, 6, 10)
 		}
