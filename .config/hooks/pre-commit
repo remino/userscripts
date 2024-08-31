@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-for src_file in $(git diff --cached --name-only --diff-filter=ACM | grep '\.src\.html$'); do
-    output_file="${src_file/.src.html/.html}"
-
-    minify "$src_file" > "$output_file"
-    git add "$output_file"
-done
