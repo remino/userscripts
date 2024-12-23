@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+# @raycast.author Rémino Rem
+# @raycast.authorURL https://remino.net
+# @raycast.packageName Projects
+# @raycast.schemaVersion 1
+# @raycast.title Create Dated Project Folder
+# @raycast.description Creates a dated project folder with mkprj.
+# @raycast.mode silent
+# @raycast.argument1 { "type": "text", "placeholder": "Project name" }
+# @raycast.icon 📁
+
+mkprj "$1" | while read -r name; do
+	open "$name"
+done
