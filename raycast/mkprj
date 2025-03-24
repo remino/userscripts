@@ -12,6 +12,11 @@
 
 _mkprj() {
 	local name="$1"
+
+	if [[ "$name" == "~"* ]]; then
+		name="${HOME}${name:1}"
+	fi
+
 	mkprj "$name"
 }
 
