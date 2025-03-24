@@ -4,24 +4,17 @@
 # @raycast.authorURL https://remino.net
 # @raycast.packageName Projects
 # @raycast.schemaVersion 1
-# @raycast.title Create Dated Project Folder
+# @raycast.title Create Project Folder
 # @raycast.description Creates a dated project folder with mkprj.
 # @raycast.mode silent
 # @raycast.argument1 { "type": "text", "placeholder": "Project name" }
-# @raycast.argument2 { "type": "text", "placeholder": "Date (yyyy-mm-dd)", "optional": true }
 # @raycast.icon 📁
 
 _mkprj() {
 	local name="$1"
-	local date="$2"
-
-	if [ -n "$date" ]; then
-		mkprj -d "$date" "$name"
-	else
-		mkprj "$name"
-	fi
+	mkprj "$name"
 }
 
-_mkprj "$1" "$2" | while read -r name; do
+_mkprj "$1" | while read -r name; do
 	open "$name"
 done
