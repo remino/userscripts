@@ -1,0 +1,4 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\OpenSSH]
+"DefaultShell"="C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
