@@ -10,11 +10,16 @@ Collection of bookmarklets, userscripts, and userstyles.
 
 ---
 
-- [Bookmarklets](#bookmarklets)
-	- [Usage](#usage)
-	- [Development](#development)
-- [Userscripts](#userscripts)
-- [Userstyles](#userstyles)
+<!-- mtoc-start -->
+
+* [Bookmarklets](#bookmarklets)
+  * [Usage](#usage)
+  * [Development](#development)
+  * [Details](#details)
+* [Userscripts](#userscripts)
+* [Userstyles](#userstyles)
+
+<!-- mtoc-end -->
 
 ## Bookmarklets
 
@@ -34,6 +39,13 @@ To create a new bookmarklet:
 - Run `pnpm start`.
 
 The new bookmarklet should be found in `bookmarklets/index.html`.
+
+### Details
+
+Some bookmarklets have their own page:
+
+- [Contrast Checker](https://remino.github.io/userscripts/bookmarklets/contrast-checker/)
+- [Japaste](https://remino.github.io/userscripts/bookmarklets/japaste/)
 
 ## Userscripts
 
