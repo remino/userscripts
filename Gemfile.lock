@@ -9,6 +9,8 @@ GEM
       zeitwerk (~> 2.2, >= 2.2.2)
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
+    base64 (0.2.0)
+    bigdecimal (3.1.9)
     coffee-script (2.4.1)
       coffee-script-source
       execjs
@@ -16,6 +18,7 @@ GEM
     colorator (1.1.0)
     commonmarker (0.23.6)
     concurrent-ruby (1.1.10)
+    csv (3.3.4)
     dnsruby (1.61.9)
       simpleidn (~> 0.1)
     em-websocket (0.5.3)
@@ -285,6 +288,9 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  base64
+  bigdecimal
+  csv
   faraday-retry (~> 2.0)
   github-pages
   http_parser.rb (~> 0.6.0)

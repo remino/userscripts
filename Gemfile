@@ -7,6 +7,9 @@ source "https://rubygems.org"
 gem "github-pages", group: :jekyll_plugins
 # gem "jekyll", "~> 4.2.2"
 
+gem "base64"
+gem "bigdecimal"
+gem "csv"
 gem "faraday-retry", "~> 2.0"
 gem "http_parser.rb", "~> 0.6.0", platforms: [:jruby]
 gem "prettier"
